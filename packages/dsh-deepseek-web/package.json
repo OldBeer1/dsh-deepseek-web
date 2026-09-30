@@ -2,7 +2,7 @@
   "name": "@local/dsh-deepseek-web",
   "version": "0.2.1",
   "private": true,
-  "description": "在 DSH 里直接问 DeepSeek 网页版（不耗官方 API 额度）",
+  "description": "在 DSH 里直接问 DeepSeek 网页版（不耗官方 API 额度）· Ask DeepSeek's web chat from inside DSH, spending your web quota instead of the metered API",
   "type": "module",
   "icon": "./icon.svg",
   "exports": {
