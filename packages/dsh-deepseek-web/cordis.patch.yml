@@ -1,0 +1,5 @@
+# 一个插件行，双面：exports "." 跑在 Host 进程，package.json 里的 dsh.client
+# 让浏览器半边（exports "./client"）在 Web GUI 中加载。
+- insert:
+    - id: deepseek-web
+      name: '@local/dsh-deepseek-web'

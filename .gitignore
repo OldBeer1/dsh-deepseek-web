@@ -1,0 +1,14 @@
+﻿node_modules/
+*.zip
+*.log
+.DS_Store
+Thumbs.db
+
+# 绝不入库：登录凭证
+config.json
+*.token
+
+# 抓包产物（含本机真实对话内容与从应用内抽出的官方代码）
+search-frames.json
+extracted/
+.dsh-ds-probe/

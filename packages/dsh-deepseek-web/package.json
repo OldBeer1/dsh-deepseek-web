@@ -1,0 +1,21 @@
+{
+  "name": "@local/dsh-deepseek-web",
+  "version": "0.2.1",
+  "private": true,
+  "description": "在 DSH 里直接问 DeepSeek 网页版（不耗官方 API 额度）",
+  "type": "module",
+  "icon": "./icon.svg",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  },
+  "files": ["index.js", "client.js", "cordis.patch.yml", "icon.svg", "tools", "安装说明.md"]
+}
