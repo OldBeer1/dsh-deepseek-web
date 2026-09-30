@@ -109,6 +109,12 @@ node test/harness-client.mjs
 「渲染顺序必须恰好是 `think>search>think>browse>answer`」。
 
 `docs/实现文档.md` 是完整的实现文档，含所有实测结论与踩坑记录（§9 是逐轮实测日志）。
+**英文入口是 [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)** —— 架构、协议实测结论、以及失效时怎么重新发现。
+
+> 文档语言说明：面向使用者的文档（README、安装说明、两个安装脚本、面板界面）全部**中英双语**；
+> 代码内注释与那 190 KB 的实现日志是中文。**不把实现日志全文翻译**是刻意的取舍 ——
+> 两份长期文档必然分叉，而这份日志的价值在于"当时到底测到了什么"，
+> 增量维护时只改一份才不会写出互相矛盾的结论。英文读者请从 `docs/IMPLEMENTATION.md` 入手。
 
 ## 目录
 
@@ -250,6 +256,15 @@ forwarded", "blocks must render in exactly this order: `think>search>think>brows
 
 `docs/实现文档.md` is the full implementation document, including every measured finding and every
 dead end (§9 is a round-by-round log). It is written in Chinese.
+**The English entry point is [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)** — architecture,
+measured protocol findings, and how to re-discover the protocol when it breaks.
+
+> Documentation language: everything user-facing (this README, the installation guide, both install
+> scripts, the panel UI) is **bilingual**. Code comments and the 190 KB engineering log are Chinese.
+> **Not translating that log in full is a deliberate trade-off** — two long-lived copies inevitably
+> drift, and the log's value is "what was actually measured at the time"; keeping it single-source is
+> what prevents contradictory conclusions. English readers should start at
+> `docs/IMPLEMENTATION.md`.
 
 ## Layout
 

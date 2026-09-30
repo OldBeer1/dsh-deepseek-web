@@ -1,4 +1,17 @@
 /**
+ * DSH x DeepSeek Web plugin - HOST half (runs in DSH's Node process).
+ * DSH x DeepSeek 网页版插件 —— 宿主半边（跑在 DSH 的 Node 进程里）。
+ *
+ * Owns: proof-of-work solving, every upstream call, SSE parsing, and the api/deepseek-web/* routes.
+ * 职责：PoW 求解、所有上游调用、SSE 解析，以及 api/deepseek-web/* 这些路由。
+ *
+ * Read this first (English): ../docs/IMPLEMENTATION.md
+ * 详尽实测日志（中文）: ../docs/实现文档.md
+ *
+ * Measured, not assumed: host-side JS loads ONCE per process - a page refresh or a plugin
+ * reinstall will not pick up changes here. Restart DSH.
+ * 实测结论：宿主端 JS 每个进程只加载一次 —— 刷新页面或重装插件都不会生效，必须重启 DSH。
+ *//**
  * DSH × DeepSeek 网页版 —— Host 半边。
  *
  * 职责：凭证保管（永不下发）、PoW 求解、把 chat.deepseek.com 的 SSE

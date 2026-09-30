@@ -1,4 +1,16 @@
 /**
+ * DSH x DeepSeek Web plugin - CLIENT half (runs in the DSH web page).
+ * DSH x DeepSeek 网页版插件 —— 前端半边（跑在 DSH 的网页里）。
+ *
+ * Single file on purpose: no bundler, no relative imports - only `react` from the module table.
+ * 故意做成单文件：没有打包器、没有相对导入，只从模块表里取 `react`。
+ *
+ * Read this first (English): ../docs/IMPLEMENTATION.md
+ * 详尽实测日志（中文）: ../docs/实现文档.md
+ *
+ * Client-side changes take effect on a page refresh; host-side changes need a DSH restart.
+ * 前端改动刷新页面即生效；宿主改动必须重启 DSH。
+ *//**
  * DSH × DeepSeek 网页版 —— 浏览器半边。
  * 手写 client.js：只从模块表里取 react，样式自己注入，字符串走 locale 服务。
  */
