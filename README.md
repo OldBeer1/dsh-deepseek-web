@@ -22,14 +22,42 @@
 
 ## 安装
 
-需要 DSH 桌面版（开发环境为 `0.2.0-rc.2`）。**零依赖、免构建。**
+### 最简：一句话（推荐）
 
-1. 把 `packages/dsh-deepseek-web` 放到本机任意目录（路径**别带空格**）
-2. 让 DSH 装上它 —— 对你的 DSH 助手说：
+前提：已装 DSH 桌面版、本机有 git、并且你有本仓库的访问权限。
+把下面这句发给**你自己的 DSH 助手**，剩下交给它：
+
+> 把 `https://github.com/OldBeer1/dsh-deepseek-web` 克隆下来，装上其中的插件包（在 `packages/dsh-deepseek-web`），完成后告诉我还要做什么。
+
+它内部会做两件事：`git clone` + 调用 `plugin_manager install_bundle`。
+（DSH **没有**命令行安装器 —— 插件管理器的工具就是唯一受支持的安装入口。）
+
+然后：
+
+1. **完全退出 DSH 再打开**（不是刷新页面）
+2. 左侧图标栏点新出现的图标
+3. 右上角「设置」→ 手机号登录
+
+### 不想用 git：下载 ZIP + 跑脚本
+
+`Code → Download ZIP` 下载解压后，在仓库根目录跑：
+
+- **Windows**：`powershell -ExecutionPolicy Bypass -File install.ps1`
+- **macOS / Linux**：`bash install.sh`
+
+脚本会把插件放到 `%DSH_HOME%\plugins\dsh-deepseek-web`（macOS/Linux 是 `~/.dsh/plugins/...`），
+并把"该对 DSH 说的那句话"**复制到剪贴板**，你粘贴一下就完事。之后同样是重启 + 登录。
+
+### 手动三步（想自己控制路径时）
+
+1. 把 `packages/dsh-deepseek-web` 放到本机任意目录
+2. 对你的 DSH 助手说：
 
    > 把 `<那个目录>` 作为插件包装进当前 profile
 
-3. **完全退出 DSH 再打开**（不是刷新页面）
+3. **完全退出 DSH 再打开**
+
+> 路径**不必**避开空格 —— 本插件就是在 `C:\Users\Old Beer\...` 这种带空格的路径下开发并实测的。
 
 装好后左侧图标栏会多一个图标。更细的步骤和排错表见
 [packages/dsh-deepseek-web/安装说明.md](packages/dsh-deepseek-web/安装说明.md)。
@@ -129,14 +157,44 @@ A two-pane panel — session list plus conversation — kept as close to the web
 
 ## Install
 
-Requires DSH Desktop (developed against `0.2.0-rc.2`). **Zero dependencies, no build step.**
+### Simplest: one sentence (recommended)
 
-1. Put `packages/dsh-deepseek-web` anywhere on your machine (avoid spaces in the path).
-2. Have DSH install it — just tell your DSH assistant:
+Prerequisites: DSH Desktop installed, git available, and you have access to this repository.
+Send this to **your own DSH assistant** and let it do the work:
+
+> Clone `https://github.com/OldBeer1/dsh-deepseek-web`, install the bundle inside it (it is at `packages/dsh-deepseek-web`), then tell me what is left to do.
+
+Internally it runs `git clone` and then `plugin_manager install_bundle`.
+(DSH has **no** command-line installer — the plugin-manager tool is the only supported entry point.)
+
+Then:
+
+1. **Quit DSH completely and reopen it** (a page refresh is not enough)
+2. Click the new icon in the left icon rail
+3. **Settings** (top right) → sign in with your phone number
+
+### No git? Download the ZIP and run the script
+
+After `Code → Download ZIP` and unpacking, from the repository root run:
+
+- **Windows**: `powershell -ExecutionPolicy Bypass -File install.ps1`
+- **macOS / Linux**: `bash install.sh`
+
+The script copies the plugin to `%DSH_HOME%\plugins\dsh-deepseek-web`
+(`~/.dsh/plugins/...` on macOS/Linux) and **puts the sentence you need to give DSH on your
+clipboard** — just paste it. Then restart and sign in as above.
+
+### Manual three steps (if you want to choose the path yourself)
+
+1. Put `packages/dsh-deepseek-web` anywhere on your machine
+2. Tell your DSH assistant:
 
    > Install the bundle at `<that directory>` into the current profile.
 
-3. **Quit DSH completely and reopen it** (a page refresh is not enough).
+3. **Quit DSH completely and reopen it**
+
+> The path does **not** need to avoid spaces — this plugin was developed and tested from
+> `C:\Users\Old Beer\...`, which contains one.
 
 An extra icon then appears in the left icon rail. Step-by-step details and a troubleshooting
 table are in [packages/dsh-deepseek-web/安装说明.md](packages/dsh-deepseek-web/安装说明.md).
