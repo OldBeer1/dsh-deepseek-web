@@ -231,11 +231,21 @@ window.__ModuleLoader__.load({
   background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-secondary);
   cursor:pointer;text-decoration:none}
 [data-dsw-cite]:hover{background:var(--dsw-alias-brand-primary);color:var(--dsw-alias-label-primary-foreground, #fff)}
+/* 表格：常被 DeepSeek 用来做对比，宽了要能横向滚，不能撑破面板 */
+[data-dsw-table]{margin:9px 0;max-width:100%;overflow-x:auto}
+[data-dsw-table] table{border-collapse:collapse;font-size:12.5px}
+[data-dsw-table] th,[data-dsw-table] td{border:1px solid var(--dsw-alias-border-l1);
+  padding:5px 10px;text-align:left;vertical-align:top;line-height:1.55}
+[data-dsw-table] th{background:var(--dsw-alias-bg-layer-2);font-weight:650;
+  color:var(--dsw-alias-label-primary);white-space:nowrap}
+[data-dsw-table] tbody tr:nth-child(even) td{background:var(--dsw-alias-bg-layer-2)}
 [data-dsw-search]{margin:0 0 10px;padding:8px 11px;border-radius:7px;
   background:var(--dsw-alias-bg-layer-2);font-size:12.5px}
 [data-dsw-search] summary{cursor:pointer;color:var(--dsw-alias-label-secondary);font-weight:600;user-select:none}
 [data-dsw-query]{margin-top:6px;font-size:11.5px;color:var(--dsw-alias-label-secondary);line-height:1.6}
-[data-dsw-sources]{margin-top:8px;display:flex;flex-direction:column;gap:7px}
+/* 搜索命中可能几十条：给个高度上限让它自己滚，而不是把面板撑到天上去 */
+[data-dsw-sources]{margin-top:8px;display:flex;flex-direction:column;gap:7px;
+  max-height:360px;overflow-y:auto;overscroll-behavior:contain}
 [data-dsw-sourcerow]{display:flex;flex-direction:column;gap:2px}
 /* 让"这是一个能点开的网页"一眼看得出来：主色 + 外链箭头 + 悬停下划线 */
 [data-dsw-sourcerow] a{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;
@@ -395,6 +405,28 @@ window.__ModuleLoader__.load({
             i += 1
           }
           blocks.push(h('blockquote', { key: key++ }, renderInline(body.join('\n'), refs, byId)))
+          continue
+        }
+        // 表格：一行 | a | b | 紧跟分隔行 |---|---|（也支持不写首尾竖线的写法）
+        // 之前完全没处理，于是整张表被当纯文本吐出来 —— 用户看到的就是一堆竖线。
+        const isTableSeparator = (row) => /^\s*\|?[\s:|-]*-[\s:|-]*\|?\s*$/.test(row) && row.includes('-')
+        if (line.includes('|') && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
+          const splitRow = (row) => row.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|').map((cell) => cell.trim())
+          const header = splitRow(line)
+          i += 2
+          const rows = []
+          while (i < lines.length && lines[i].trim() !== '' && lines[i].includes('|')) {
+            rows.push(splitRow(lines[i]))
+            i += 1
+          }
+          blocks.push(h('div', { key: key++, 'data-dsw-table': '' },
+            h('table', null,
+              h('thead', null, h('tr', null, header.map((cell, cellIndex) => (
+                h('th', { key: cellIndex }, renderInline(cell, refs, byId))
+              )))),
+              h('tbody', null, rows.map((row, rowIndex) => h('tr', { key: rowIndex },
+                header.map((_, cellIndex) => h('td', { key: cellIndex },
+                  renderInline(row[cellIndex] === undefined ? '' : row[cellIndex], refs, byId)))))))))
           continue
         }
         if (line.trim() === '') { i += 1; continue }

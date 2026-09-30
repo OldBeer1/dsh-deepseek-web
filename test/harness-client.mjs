@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 集成验证（Client 半边）：把真实包文件 client.js 跑起来。
  * 没有 react 可用（在 asar 里），所以写一个最小 React shim：函数组件 + hooks，
  * 跨渲染保持实例状态，并且能「排空 effect」以验证异步数据流。
@@ -266,6 +266,11 @@ const RICH_MESSAGE = {
         '*   天气状况：多云',
         '*   气温范围：12℃ ~ 23℃',
         '',
+        '| 项目 | 数值 |',
+        '| --- | --- |',
+        '| 气温 | 12℃ |',
+        '| 风力 | 4~5级 |',
+        '',
         '---',
         '',
         '> 提示：风大',
@@ -407,6 +412,38 @@ check('★ 两个思考段各自带自己的耗时', (() => {
   return sums.some((s) => s.includes('0.5 秒')) && sums.some((s) => s.includes('0.2 秒'))
 })(), find(treeRich, (n) => n.tag === 'summary').map((n) => allText(n)).join(' | ').slice(0, 100))
 check('加粗仍渲染成 <strong>', find(treeRich, (n) => n.tag === 'strong').some((n) => allText(n) === '多云'))
+check('★ markdown 表格渲染成 <table>（之前整张表被当纯文本，看到一堆竖线）', (() => {
+  const tables = find(treeRich, (n) => n.tag === 'table')
+  const ths = find(treeRich, (n) => n.tag === 'th')
+  const tds = find(treeRich, (n) => n.tag === 'td')
+  return tables.length === 1 && ths.length === 2 && tds.length === 4
+    && allText(ths[0]) === '项目' && allText(tds[0]) === '气温'
+})(), 'table=' + find(treeRich, (n) => n.tag === 'table').length + ' th=' + find(treeRich, (n) => n.tag === 'th').length + ' td=' + find(treeRich, (n) => n.tag === 'td').length)
+check('表格套了可横向滚动的容器（宽表不撑破面板）',
+  find(treeRich, (n) => n.props?.['data-dsw-table'] !== undefined).length === 1)
+
+// 2d-3 搜索结果必须**全部**显示（曾经写死只带 12 条）
+const MANY = 25
+const allResults = await mountPanel({
+  sessions: SESSIONS,
+  messages: [{
+    role: 'assistant',
+    refs: [],
+    blocks: [
+      {
+        kind: 'search', id: 3, label: 'Found 25 web pages', queries: ['潍坊 天气'], resultCount: MANY,
+        results: Array.from({ length: MANY }, (_, i) => ({
+          url: 'https://example.com/' + i, title: '第 ' + (i + 1) + ' 条结果', siteName: '某站',
+        })),
+      },
+      { kind: 'answer', text: '共 25 条' },
+    ],
+  }],
+})
+const treeMany = await allResults.settle()
+check('★ 搜索结果的 ' + MANY + ' 条全部渲染（不截断）',
+  find(treeMany, (n) => n.props?.['data-dsw-sourcerow'] !== undefined).length === MANY,
+  '实际渲染 ' + find(treeMany, (n) => n.props?.['data-dsw-sourcerow'] !== undefined).length + ' 条')
 
 // 2e 侧栏交互：⋯ 菜单 → 重命名
 const e = await mountPanel({ sessions: SESSIONS, messages: MESSAGES })

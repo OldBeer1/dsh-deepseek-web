@@ -568,7 +568,8 @@ function collectParts(fragments) {
         label: content,
         queries,
         resultCount: results.length,
-        results: results.slice(0, 12).map((r) => ({
+        // 不截断：官方搜到多少条就带多少条（曾写死 12，用户反馈"显示不全"）
+        results: results.map((r) => ({
           url: r?.url ?? '', title: r?.title ?? '', siteName: r?.site_name ?? '', snippet: r?.snippet ?? '',
         })),
       }
@@ -706,7 +707,7 @@ function emitEntry(state, id, out) {
     out.push({
       kind: 'search', fragmentId: entry.id, label: entry.content,
       queries: entry.queries, resultCount: entry.results.length,
-      results: entry.results.slice(0, 12).map((r) => ({
+      results: entry.results.map((r) => ({
         url: r?.url ?? '', title: r?.title ?? '', siteName: r?.site_name ?? '', snippet: r?.snippet ?? '',
       })),
     })
